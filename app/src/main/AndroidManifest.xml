@@ -32,6 +32,10 @@
         <activity
             android:name=".Group_page"
             android:label="@string/title_activity_group_page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Chat_page"
+            android:label="@string/title_activity_chat_page"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

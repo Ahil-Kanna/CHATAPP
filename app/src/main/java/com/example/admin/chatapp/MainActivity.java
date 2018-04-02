@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.content.SharedPreferences;
 import android.widget.CheckBox;
 import android.widget.Toast;
 import javax.crypto.Cipher.*;
@@ -28,9 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "EmailPassword";
     private FirebaseAuth mAuth;
     DatabaseReference databaseReference;
+    CheckBox checkBox;
     TextInputEditText user,pass;
     TextInputLayout userl,passl;
     private IntentIntegrator qrScan;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences.Editor loginPrefsEditor;
+    boolean saveLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +47,23 @@ public class MainActivity extends AppCompatActivity {
         userl=(TextInputLayout) findViewById(R.id.textInputLayout);
         pass=(TextInputEditText) findViewById(R.id.passwordl);
         passl=(TextInputLayout) findViewById(R.id.passlay);
+        checkBox=(CheckBox) findViewById(R.id.checkBox);
         qrScan = new IntentIntegrator(this);
 
         //
         mAuth = FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference("Details");
+
+        //remember me
+        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
+        loginPrefsEditor = loginPreferences.edit();
+
+        saveLogin = loginPreferences.getBoolean("saveLogin", false);
+        if (saveLogin == true) {
+            user.setText(loginPreferences.getString("username", ""));
+            pass.setText(loginPreferences.getString("password", ""));
+            checkBox.setChecked(true);
+        }
     }
 
     @Override
@@ -124,6 +141,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        if (checkBox.isChecked()) {
+            loginPrefsEditor.putBoolean("saveLogin", true);
+            loginPrefsEditor.putString("username", user.getText().toString());
+            loginPrefsEditor.putString("password", pass.getText().toString());
+            loginPrefsEditor.commit();
+        } else {
+            loginPrefsEditor.clear();
+            loginPrefsEditor.commit();
+        }
+
         // showProgressDialog();
 
         // [START create_user_with_email]
@@ -192,6 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String Decryptpass(String md5){
 
+        passl.setPasswordVisibilityToggleDrawable(0);
         return md5;
 
     }
