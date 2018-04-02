@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
+import javax.crypto.Cipher.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     TextInputEditText user,pass;
     TextInputLayout userl,passl;
+    private IntentIntegrator qrScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +42,35 @@ public class MainActivity extends AppCompatActivity {
         userl=(TextInputLayout) findViewById(R.id.textInputLayout);
         pass=(TextInputEditText) findViewById(R.id.passwordl);
         passl=(TextInputLayout) findViewById(R.id.passlay);
+        qrScan = new IntentIntegrator(this);
 
         //
         mAuth = FirebaseAuth.getInstance();
         databaseReference= FirebaseDatabase.getInstance().getReference("Details");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            //if qrcode has nothing in it
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            } else {
+                //if qr contains data
+
+                    //converting the data to json
+                    String obj = new String(result.getContents());
+                    //setting values to textviews
+                    user.setText(obj.split(",")[0]);
+                    pass.setText(Decryptpass(obj.split(",")[1]));
+
+                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 
@@ -156,5 +185,50 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void scanuser(View v){
+        qrScan.initiateScan();
+    }
+
+    public String Decryptpass(String md5){
+
+        return md5;
+
+    }
+
+    public void forgotpass(View v){
+        if(TextUtils.isEmpty(user.getText().toString())) {
+            userl.setError("This field can't be empty");
+            Toast.makeText(this, "Enter fields", Toast.LENGTH_SHORT).show();
+        }
+        else if(!TextUtils.isEmpty(user.getText().toString())) {
+            userl.setError(null);
+        }
+
+        if(!user.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
+            userl.setError("Invalid Email");
+            Toast.makeText(this, "Enter field properly", Toast.LENGTH_SHORT).show();
+        }
+        else if(user.getText().toString().matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+"))
+            userl.setError(null);
+
+        else{
+        FirebaseAuth.getInstance().sendPasswordResetEmail(user.getText().toString())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Reset Email sent.");
+                            Toast.makeText(MainActivity.this, "Reset Email sent.", Toast.LENGTH_SHORT).show();
+                        }
+                    else{
+                            Toast.makeText(MainActivity.this, "Error sending Email", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+    }}
+
 }
+
 

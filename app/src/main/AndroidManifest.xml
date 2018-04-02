@@ -7,10 +7,11 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/chaticon"
         android:label="CHAT"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -27,7 +28,11 @@
             android:label="Welcome"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Update_details" />
-        <activity android:name=".Change_pass"></activity>
+        <activity android:name=".Change_pass" />
+        <activity
+            android:name=".Group_page"
+            android:label="@string/title_activity_group_page"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
