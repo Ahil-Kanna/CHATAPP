@@ -58,7 +58,7 @@ public class Group_page extends AppCompatActivity {
                         list.setAdapter(adapter);
                         HashMap<String,String> obj=new HashMap<>();
                         obj.put("Admin",FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        databaseReference.child("Group").child(yourTextView.getText().toString()).setValue(obj);
+                        databaseReference.child("Group").push().child(yourTextView.getText().toString()).setValue(obj);
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
