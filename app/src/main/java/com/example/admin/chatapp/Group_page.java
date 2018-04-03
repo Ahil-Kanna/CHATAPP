@@ -62,6 +62,7 @@ public class Group_page extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
+
                 });
                 dialog.setCancelable(true);
                 dialog.show();
