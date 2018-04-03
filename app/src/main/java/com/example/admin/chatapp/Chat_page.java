@@ -6,9 +6,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.provider.ContactsContract;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class Chat_page extends AppCompatActivity {
 
+    ListView list;
+    ListAdapter adapter;
+    DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,10 +32,21 @@ public class Chat_page extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
             }
         });
+
+        ArrayList<String> listItems=new ArrayList<String>();
+        list=(ListView) findViewById(R.id.listview);
+        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
+        list.setAdapter(adapter);
+        listItems.add("Contacts");
+        adapter.notify();
+        databaseReference= FirebaseDatabase.getInstance().getReference("chat");
+
+
+
     }
+
 
 }
