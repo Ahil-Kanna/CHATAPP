@@ -31,11 +31,11 @@
         <activity android:name=".Change_pass" />
         <activity
             android:name=".Group_page"
-            android:label="@string/title_activity_group_page"
+            android:label="GROUP LIST"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Chat_page"
-            android:label="@string/title_activity_chat_page"
+            android:label="CONTACTS LIST"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

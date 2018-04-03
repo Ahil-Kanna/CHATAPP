@@ -72,5 +72,9 @@ public class Main2Activity extends AppCompatActivity {
         finishAffinity();
     }
 
+    public void creategroup(View v){
+        Intent i=new Intent(Main2Activity.this,Group_page.class);
+        startActivity(i);
+    }
 
 }

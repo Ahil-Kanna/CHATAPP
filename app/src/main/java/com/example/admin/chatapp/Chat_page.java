@@ -38,10 +38,10 @@ public class Chat_page extends AppCompatActivity {
 
         ArrayList<String> listItems=new ArrayList<String>();
         list=(ListView) findViewById(R.id.listview);
+        listItems.add("Contacts");
         adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
         list.setAdapter(adapter);
-        listItems.add("Contacts");
-        adapter.notify();
+
         databaseReference= FirebaseDatabase.getInstance().getReference("chat");
 
 

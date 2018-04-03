@@ -8,4 +8,10 @@
     tools:context="com.example.admin.chatapp.Group_page"
     tools:showIn="@layout/activity_group_page">
 
+    <ListView
+        android:id="@+id/group_list"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp" />
 </android.support.constraint.ConstraintLayout>
