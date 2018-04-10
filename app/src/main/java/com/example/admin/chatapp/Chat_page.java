@@ -72,7 +72,7 @@ public class Chat_page extends AppCompatActivity {
             }
             });
 
-        usersdRef.addValueEventListener( new ValueEventListener() {
+        usersdRef.child(uname).addValueEventListener( new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listItems.clear();

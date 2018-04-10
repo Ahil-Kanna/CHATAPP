@@ -14,7 +14,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -45,7 +45,7 @@ public class Chat extends AppCompatActivity {
         messageArea = (EditText) findViewById(R.id.messageArea);
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
-        reference1 = FirebaseDatabase.getInstance().getReference();//.child("messages").child(username + "_" + chatWith);
+        reference1 = FirebaseDatabase.getInstance().getReference().child("messages");//.child("messages").child(username + "_" + chatWith);
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -57,21 +57,22 @@ public class Chat extends AppCompatActivity {
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("text", messageText);
                     map.put("name", username);
-                    reference1.child("messages").child(username + "_" + chatWith).push().setValue(map);
-                    reference1.child("messages").child(chatWith + "_" + username).push().setValue(map);
+                    reference1.child(username).child(username + "_" + chatWith).push().setValue(map);
+                    reference1.child(chatWith).child(chatWith + "_" + username).push().setValue(map);
                     messageArea.setText("");
                     addMessageBox(messageText,1);
                 }
             }
         });
 
-        Toast.makeText(this, username+chatWith, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, username+chatWith, Toast.LENGTH_SHORT).show();
 
-        /*reference1.child("messages").child(username + "_" + chatWith).addValueEventListener(new ValueEventListener() {
+        /*reference1.child(username).addValueEventListener(new ValueEventListener() {
             @Override
-           public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                for (com.google.firebase.database.DataSnapshot ds : dataSnapshot.getChildren()) {
-                    HashMap<String, String> map = (HashMap<String, String>) dataSnapshot.getValue();
+           public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> ds = dataSnapshot.child(username + "_" + chatWith).getChildren();
+                for (DataSnapshot chatt : ds) {
+                    HashMap<String, String> map = chatt.getValue(HashMap.class);
                     String message = map.get("text").toString();
                     String userName = map.get("name").toString();
 
@@ -89,7 +90,13 @@ public class Chat extends AppCompatActivity {
 
             }
         });*/
+
     }
+
+
+
+
+
     public void addMessageBox(String message, int type){
         TextView textView = new TextView(Chat.this);
         textView.setText(message);
