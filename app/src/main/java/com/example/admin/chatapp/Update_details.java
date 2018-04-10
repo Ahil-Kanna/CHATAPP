@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class Update_details extends AppCompatActivity {
 
-    TextInputEditText email1,name1,phno1,age1;
+    TextInputEditText email1,name1,phno1,age1,un;
     TextInputLayout emaill,namel,phnol,agel;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
@@ -36,6 +36,7 @@ public class Update_details extends AppCompatActivity {
         phno1=(TextInputEditText) findViewById(R.id.phone);
         age1=(TextInputEditText) findViewById(R.id.age);
         email1.setText(firebaseAuth.getCurrentUser().getEmail());
+        un=(TextInputEditText) findViewById(R.id.uname1);
     }
 
     public void update1(View view){
@@ -50,7 +51,10 @@ public class Update_details extends AppCompatActivity {
         values.put("Age",age1.getText().toString());
         values.put("Phone",phno1.getText().toString());
         values.put("balance","100");
-        databaseReference.child("Details").child(firebaseAuth.getCurrentUser().getUid()).setValue(values);
+        databaseReference.child("map").child("u2n").child(firebaseAuth.getCurrentUser().getUid()).setValue(un.getText().toString());
+        databaseReference.child("map").child("n2u").child(un.getText().toString()).setValue(firebaseAuth.getCurrentUser().getUid());
+        databaseReference.child("Details").child(un.getText().toString()).setValue(values);
+
             Toast.makeText(this, "updated", Toast.LENGTH_SHORT).show();
             finish();
         }}

@@ -36,7 +36,8 @@
         <activity
             android:name=".Chat_page"
             android:label="CONTACTS LIST"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Chat"></activity>
     </application>
 
 </manifest>
